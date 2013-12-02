@@ -1,41 +1,15 @@
+ 
 ###########################
 # WP htaccess Boilerplate #
 ###########################
 
-### https://github.com/Creare/WP-htaccess/
+ 
 
 ############
 # Security #
 ############
 
-### Prevent wp-config.php from being loaded:
-<files wp-config.php>
-    order allow,deny
-    deny from all
-</files>
-
-### Prevent directory browsing
-<IfModule mod_autoindex.c>
-  Options -Indexes
-</IfModule>
-
-### Prevent this .htaccess from being accessed:
-<files .htaccess>
-    order allow,deny
-    deny from all
-</files>
-
-### Disable HTTP Trace
-RewriteEngine On
-RewriteCond %{REQUEST_METHOD} ^TRACE
-RewriteRule .* - [F]
-
-### Block access to hidden files & directories
-<IfModule mod_rewrite.c>
-    RewriteCond %{SCRIPT_FILENAME} -d [OR]
-    RewriteCond %{SCRIPT_FILENAME} -f
-    RewriteRule "(^|/)\." - [F]
-</IfModule>
+ 
 
 ### Block access to source files
 <FilesMatch "(^#.*#|\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|sw[op])|~)$">
@@ -66,37 +40,6 @@ RewriteRule .* - [F]
 </IfModule>
 
 # END WordPress
-
-
-###############################
-# Additional Rewrite Settings #
-###############################
-
-# Option 1
-# http://domain > http://www.domain
-
-<IfModule mod_rewrite.c>
-    # Options +FollowSymlinks #Not supported by some hosting
-    ### If you wish to redirect to a https:// simply substitute http: with https:
-    RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
-    RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-    ### Redirect away from /index.php to clear path
-    RewriteCond %{THE_REQUEST} ^.*/index.php  
-    RewriteRule ^(.*)index.php$ http://www.%{HTTP_HOST}%{REQUEST_URI}$1 [R=301,L] 
-</IfModule>
-
-# Option 2
-# http://www.domain > http://domain
-
-#<IfModule mod_rewrite.c>
-    # Options +FollowSymlinks #Not supported by some hosting
-    ### If you wish to redirect to a https:// simply substitute http: with https:
-    #RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-    #RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
-    ### Redirect away from /index.php to clear path
-    #RewriteCond %{THE_REQUEST} ^.*/index.php  
-    #RewriteRule ^(.*)index.php$ http://%{HTTP_HOST}%{REQUEST_URI}$1 [R=301,L] 
-#</IfModule>
 
 
 #######################
@@ -159,20 +102,3 @@ AddOutputFilterByType DEFLATE application/x-javascript
 #Remove the ETag header
 Header unset ETag 
 FileETag None  
-
-
-#######################
-# File Format Support #
-#######################
-
-### Add support for SVG and HTC
-AddType image/svg+xml svg svgz
-AddEncoding gzip svgz
-AddType text/x-component .htc
-
-
-########################
-# Manual 301 Redirects #
-########################
-
-#redirect 301 /old-page-url.html https://www.domain.co.uk/new-page-url
